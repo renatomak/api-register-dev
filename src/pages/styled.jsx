@@ -1,0 +1,95 @@
+import styled from 'styled-components';
+
+export const Container = styled.div`
+  align-items: center;
+  background-color: var(--background2);
+  display: flex;
+  flex-direction: column;
+  height: 98vh;
+
+`;
+
+export const Button = styled.button`
+  color: var(--dodgerBlue);
+  border: none;
+  background: white;
+  line-height: 40px;
+  font-size: 1em;
+  padding: 0.25em 1em;
+  border-radius: 20px;
+  width: 40%;
+  transition: 0.3s;
+  :hover {
+    opacity: 0.8;
+    background-color: var(--dodgerBlue);
+    color: var(--white)
+  }
+`;
+
+export const DivForm = styled.form`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+`;
+
+export const DivTelephone = styled.div`
+  display: flex;
+  #input-home-phone {
+    margin-right: 20px;
+  }
+`;
+
+export const DivAddress = styled.div`
+  display: flex;
+  flex-direction: column;
+  #input-state, #input-street {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  #input-number {
+    width: 100px;
+  }
+  .cep-state-city, .district-street-number {
+    display: flex;
+  }
+`;
+
+export const DivSpecialties = styled.div`
+  display: flex;
+  background-color: #2b8bb1;
+  height: 50px;
+  border-radius: 20px;
+  align-items: center;
+  *{
+    flex-grow: 1;
+  }
+  margin-bottom: 20px;
+`;
+
+export const Input = styled.input`
+  width: 90%;
+  display: flex;
+  background-color: transparent;
+  border: 3px solid var(--lightNavyBlue);
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: var(--dodgerBlue);
+  font-size: 15px;
+  line-height: 40px;
+  margin-bottom: 20px;
+  outline: none;
+  padding-left: 20px;
+  transition: 0.3s;
+  width: 100%;
+
+  :focus {
+    border-color: var(--dodgerBlue);
+    box-shadow: 0 0 8px 0 var(--dodgerBlue);
+    color: var(--dodgerBlue);
+  }
+  ::placeholder {
+    color: var(--dodgerBlue);
+  }
+`;
+
