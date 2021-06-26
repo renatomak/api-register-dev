@@ -1,24 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, DivForm, DivTelephone, DivAddress, Input, DivSpecialties, Button } from './styled';
+import { fetchCheckedCEP, fetchLanguages, fetchCreateUser } from '../requests'
+const initialAddress = {
+  cep: '',
+  state: '',
+  city: '',
+  district: '',
+  street: '',
+  number: 0,
+  complement: '',
+}
 
 function Form() {
-  const [name, setName] = useState('');
+  const [fullname, setFullname] = useState('');
   const [homePhone, setHomePhone] = useState('');
   const [cellPhone, setCellPhone] = useState('');
-  const [cep, setCep] = useState('');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
-  const [district, setDistrict] = useState('');
-  const [street, setStreet] = useState('');
-  const [number, setNumber] = useState('');
-  const [complement, setComplement] = useState('');
+  const [address, setAddress] = useState(initialAddress);
+  const [languages, setLanguages] = useState([]);
 
-  const consultaCep = () => {
-
+  const consultaCep = async (valueCep) => {
+    const {
+      cep,
+      street,
+      complement,
+      city,
+      district,
+      state,
+      number } = await fetchCheckedCEP(valueCep);
+    setAddress({...address, cep, street, complement, city, district, state, number })
   }
 
-  const handleChangeHomeName = ({ target: { value } }) => {
-    setName(value);
+  useEffect( async () => {
+    const listLanguages = await fetchLanguages();
+    setLanguages(listLanguages)
+  }, [])
+
+  useEffect(() => {
+    const { cep } = address;
+    if (cep.length === 8) {
+      consultaCep(cep);
+    }
+  }, [address]);
+
+  const handleChangeHomeFullname = ({ target: { value } }) => {
+    setFullname(value);
   }
   const handleChangeHomePhone = ({ target: { value } }) => {
     setHomePhone(value);
@@ -26,37 +51,52 @@ function Form() {
   const handleChangeCellPhone = ({ target: { value } }) => {
     setCellPhone(value);
   }
-  const handleChangeCEP = ({ target: { value } }) => {
-    setCep(value);
+  const handleChangeAddress = async ({ target: { name, value } }) => {
+    setAddress({...address, [name]: value });
   }
-  const handleChangeState = ({ target: { value } }) => {
-    setState(value);
+
+  const handleChangeCheckbox = ({ target: { value }}) => {
+    const newList = languages.map((item) => {
+      if (value === item.language) {
+        return {...item, cheked: true}
+      }
+      return item;
+    })
+    setLanguages(newList);
   }
-  const handleChangeDistrict = ({ target: { value } }) => {
-    setDistrict(value);
+
+  const register = async () => {
+    const userLanguages = languages.filter((item) => {
+      console.log(item)
+      return item.cheked;
+    });
+    console.log(userLanguages)
+    console.log(languages)
+    const user = {
+      fullname,
+      homePhone, 
+      cellPhone, 
+      address,
+      languages: userLanguages
+    }
+      console.log("USER: ", user);
+    await fetchCreateUser(user)
   }
-  const handleChangeStreet = ({ target: { value } }) => {
-    setStreet(value);
+
+  const search = () => {
+
   }
-  const handleChangeCity = ({ target: { value } }) => {
-    setCity(value);
-  }
-  const handleChangeNumber = ({ target: { value } }) => {
-    setNumber(value);
-  }
-  const handleChangeComplement = ({ target: { value } }) => {
-    setComplement(value);
-  }
+
   return(
     <Container>
       <DivForm>
         <Input
           type="text"
           placeholder="NOME"
-          id="input-name-user"
-          name="name"
-          value={ name }
-          onChange={ handleChangeHomeName }/>
+          id="input-fullname-user"
+          name="fullname"
+          value={ fullname }
+          onChange={ handleChangeHomeFullname }/>
         <DivTelephone>
           <Input 
             type="text"
@@ -83,24 +123,24 @@ function Form() {
               placeholder="CEP"
               id="input-cep"
               name="cep"
-              value={ cep }
-              onChange={ handleChangeCEP }
+              value={ address.cep }
+              onChange={ handleChangeAddress }
             />
             <Input
               type="text"
               placeholder="ESTADO"
               id="input-state"
               name="state"
-              value={ state }
-              onChange={ handleChangeState }
+              value={ address.state }
+              onChange={ handleChangeAddress }
             />
             <Input
               type="text"
               placeholder="CIDADE"
               id="input-city"
               name="city"
-              value={ city }
-              onChange={ handleChangeCity }
+              value={ address.city }
+              onChange={ handleChangeAddress }
             />
           </div>
 
@@ -110,24 +150,24 @@ function Form() {
               placeholder="BAIRRO"
               id="input-district"
               name="district"
-              value={ district }
-              onChange={ handleChangeDistrict }
+              value={ address.district }
+              onChange={ handleChangeAddress }
             />
             <Input
               type="text"
               placeholder="RUA"
               id="input-street"
               name="street"
-              value={ street }
-              onChange={ handleChangeStreet }
+              value={ address.street }
+              onChange={ handleChangeAddress }
             />
             <Input
               type="text"
               placeholder="NUMERO"
               id="input-number"
               name="number"
-              value={ number }
-              onChange={ handleChangeNumber }
+              value={ address.number }
+              onChange={ handleChangeAddress }
             />
           </div>        
           <Input
@@ -135,48 +175,29 @@ function Form() {
             placeholder="COMPLEMENTO"
             id="input-complement"
             name="complement"
-            value={ complement }
-            onChange={ handleChangeComplement }
+            value={ address.complement }
+            onChange={ handleChangeAddress }
           /> 
         </DivAddress>
         <DivSpecialties>
-          <input
-            type="checkbox"
-            name="language1"
-          />
-          <label for="languageUm" >JAVA</label>
-          <input
-            type="checkbox"
-            name="language2"
-          />
-          <label for="languageUm" >PYTHON</label>
-          <input
-            type="checkbox"
-            name="language3"
-          />
-          <label for="languageUm" >JAVASCRIPT</label>
-          <input
-            type="checkbox"
-            name="language4"
-          />
-          <label for="languageUm" >GOLANG</label>
-          <input
-            type="checkbox"
-            name="language5"
-          />
-          <label for="languageUm" >CSHARP</label>
-          <input
-            type="checkbox"
-            name="language6"
-          />
-          <label for="languageUm" >ELIXIR</label>
-          
+          { languages.map(({ id, language }, index) => (
+            <>
+            <input
+              type="checkbox"
+              value={ language }
+              onChange={ handleChangeCheckbox }
+              key={ index }
+            />
+            <label htmlFor={`language${id}`} >{language}</label>
+            </>
+          ))}          
         </DivSpecialties>
         <Input
           type="text"
           placeholder="Outras Linguagens? "
           id="input-other" /> 
-        <Button>CADASTRO</Button> 
+        <Button type="button" onClick={ register } >CADASTRO</Button> 
+        <Button type="button" onClick={ search } >BUSCAR</Button> 
       </DivForm>
   </Container>
   );

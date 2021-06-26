@@ -74,8 +74,9 @@ export const Input = styled.input`
   border: 3px solid var(--lightNavyBlue);
   border-radius: 20px;
   box-sizing: border-box;
-  color: var(--dodgerBlue);
-  font-size: 15px;
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
   line-height: 40px;
   margin-bottom: 20px;
   outline: none;
