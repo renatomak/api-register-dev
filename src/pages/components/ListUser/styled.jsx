@@ -1,9 +1,17 @@
 import styled from 'styled-components';
 
 export const DivListUsers = styled.form`
-  margin-top: 50px;
+  margin-left: 50px;
   display: flex;
   flex-direction: column;
   width: 30%;
-  background-color: green;
+  line-height: 50px;
+  color: blue;
+  font-size: 2rem;
+  ul {
+    list-style: none;
+  }
+  li {
+    cursor: pointer;
+  }
 `;

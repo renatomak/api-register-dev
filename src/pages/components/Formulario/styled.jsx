@@ -8,7 +8,6 @@ export const Button = styled.button`
   font-size: 1em;
   padding: 0.25em 1em;
   border-radius: 20px;
-  width: 40%;
   transition: 0.3s;
   :hover {
     opacity: 0.8;
@@ -17,18 +16,16 @@ export const Button = styled.button`
   }
 `;
 
+export const ContainerButtons = styled.form`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const DivForm = styled.form`
   margin-top: 50px;
   display: flex;
   flex-direction: column;
   width: 60%;
-`;
-
-export const DivListUsers = styled.form`
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  width: 35%;
 `;
 
 export const DivTelephone = styled.div`

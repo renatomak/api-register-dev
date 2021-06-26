@@ -13,8 +13,8 @@ const fetchLanguages = () => {
   return fetch(endpoint)
     .then((response) => response.json())
     .then((data) => {
-      const cheked = false;
-      const list = data.map((item) => ({ ...item, cheked }));
+      const checked = false;
+      const list = data.map((item) => ({ ...item, checked }));
       console.log(list);
       return list});
 }
@@ -61,6 +61,18 @@ const fetchRemoveUser = (id) => {
     .then((response) => response)
 }
 
+const fetchChange = (user) => {
+  const endpoint = `http://localhost:3001/user`;
+  
+  return fetch(endpoint,
+    {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(user),
+    },)
+    .then((response) => response)
+}
+
 export {
   fetchCheckedCEP,
   fetchLanguages,
@@ -68,4 +80,5 @@ export {
   fetchCreateUser,
   fetchGetAllUsers,
   fetchRemoveUser,
+  fetchChange,
 };

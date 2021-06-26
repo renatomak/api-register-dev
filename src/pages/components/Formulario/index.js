@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { DivForm, DivTelephone, DivAddress, Input, DivSpecialties, Button } from './styled';
-import { fetchCheckedCEP, fetchLanguages, fetchCreateUser, fetchUser, fetchRemoveUser, fetchGetAllUsers } from '../../../requests'
+import { DivForm, DivTelephone, DivAddress, ContainerButtons, Input, DivSpecialties, Button } from './styled';
+import {
+  fetchCheckedCEP,
+  fetchLanguages,
+  fetchCreateUser,
+  fetchUser,
+  fetchRemoveUser,
+  fetchGetAllUsers,
+  fetchChange } from '../../../requests'
 import { TrybeerContext } from '../../../util';
 const initialAddress = {
   cep: '',
@@ -13,12 +20,13 @@ const initialAddress = {
 }
 
 function Form() {
-  const { selectedUser, setListUsers, setSelectedUser } = useContext(TrybeerContext);
+  const { selectedUser, setListUsers } = useContext(TrybeerContext);
   const [fullname, setFullname] = useState('');
   const [homePhone, setHomePhone] = useState('');
   const [cellPhone, setCellPhone] = useState('');
   const [address, setAddress] = useState(initialAddress);
   const [languages, setLanguages] = useState([]);
+  const [disabledExcludButton, setdisabledExcludButton] = useState(true);
 
 
   const consultaCep = async (valueCep) => {
@@ -35,25 +43,30 @@ function Form() {
 
   const updateLanguages = () => {
     const { Languages } = selectedUser;
-
+ 
     const newLanguages = languages.map((item) => {
       if (Languages.some((elem) => elem.id === item.id)) {
-        item.cheked = true;
+        item.checked = true;    
+      } else {
+        item.checked = false;  
       }
       return item;
     })
+
+
     setLanguages(newLanguages)
     console.log(languages)
   }
 
   const setFields = () => {
-    const { id, fullname, cellPhone, homePhone, addresses } = selectedUser;
+    const { fullname, cellPhone, homePhone, addresses } = selectedUser;
     console.log(selectedUser)
     console.log(fullname)
     setFullname(fullname);
     setHomePhone(homePhone);
     setCellPhone(cellPhone);
     setAddress(addresses);
+    setdisabledExcludButton(false)
     updateLanguages();
   }
 
@@ -68,7 +81,6 @@ function Form() {
   useEffect( async () => {
     const listLanguages = await fetchLanguages();
     setLanguages(listLanguages);
-    console.log('passou aqui')
   }, [])
 
   useEffect(() => {
@@ -93,31 +105,35 @@ function Form() {
     setAddress({...address, [name]: value });
   }
 
-  const handleChangeCheckbox = ({ target: { value, checked }}) => {
-    console.log(value)
-    console.log('checked', checked)
+  const handleChangeCheckbox = ({ target: { value }}) => {
+
     const newList = languages.map((item) => {
       if (value === item.language) {
-        return {...item, cheked: true}
+        item.checked = item.checked ? false : true;
       }
       return item;
     })
     setLanguages(newList);
   }
 
-  const register = async () => {
+  const newUser = () => {
     const userLanguages = languages.filter((item) => {
-      return item.cheked;
+      return item.checked;
     });
 
     const user = {
+      id: selectedUser.id,
       fullname,
       homePhone, 
       cellPhone, 
       address,
-      languages: userLanguages
+      Languages: userLanguages
     }
+    return user;
+  }
 
+  const register = async () => {
+    const user = newUser();
     await fetchCreateUser(user)
   }
 
@@ -131,14 +147,26 @@ function Form() {
     setHomePhone('');
     setCellPhone('');
     setAddress(initialAddress);
+    setdisabledExcludButton(true)
+  }
+
+  const loadNewUsers = async () => {
+    const Users = await fetchGetAllUsers();
+    setListUsers(Users);
   }
 
   const removeUser = async () => {
     clearFields();
     await fetchRemoveUser(selectedUser.id);
-    const Users = await fetchGetAllUsers();
-    setListUsers(Users);
+    loadNewUsers();
     clearFields();
+  }
+
+  const changeUser = async () => {
+    const user = newUser();
+    clearFields();
+    loadNewUsers();
+    await fetchChange(user);
   }
 
   return(
@@ -235,6 +263,8 @@ function Form() {
           <>
           <input
             type="checkbox"
+            className="languages"
+            id={id}
             value={ language }
             checked={ checked }
             onChange={ handleChangeCheckbox }
@@ -249,9 +279,12 @@ function Form() {
         placeholder="Outras Linguagens? "
         id="input-other"
       /> 
-      <Button type="button" onClick={ register } >CADASTRO</Button> 
-      <Button type="button" onClick={ search } >BUSCAR</Button> 
-      <Button type="button" onClick={ removeUser } >EXCLUIR</Button> 
+      <ContainerButtons>
+        <Button type="button" onClick={ register } >CADASTRO</Button> 
+        <Button type="button" onClick={ search } >BUSCAR</Button> 
+        <Button type="button" onClick={ removeUser } disabled={ disabledExcludButton } >EXCLUIR</Button>
+        <Button type="button" onClick={ changeUser } >ALTERAR</Button>    
+      </ContainerButtons>
     </DivForm>
   );
 }
