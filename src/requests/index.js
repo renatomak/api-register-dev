@@ -19,15 +19,20 @@ const fetchLanguages = () => {
       return list});
 }
 
-const fetchUser = (field, query) => {
-  const endpoint = `http://localhost:3001/?${field}=${query}`;
+const fetchUser = (field, query, table, nameTable) => {
+  const endpoint = `http://localhost:3001/?${field}=${query}&${table}=${nameTable}`;
+  console.log(endpoint)
   return fetch(endpoint)
     .then((response) => response.json())
-    .then((data) => {
-      const cheked = false;
-      const list = data.map((item) => ({ ...item, cheked }));
-      console.log(list);
-      return list});
+    .then((data) => data );
+}
+
+const fetchGetAllUsers = () => {
+  const endpoint = `http://localhost:3001/user`;
+  console.log(endpoint)
+  return fetch(endpoint)
+    .then((response) => response.json())
+    .then((data) => data );
 }
 
 const fetchCreateUser = (user) => {
@@ -44,10 +49,23 @@ const fetchCreateUser = (user) => {
     .then((data) => data);
 }
 
+const fetchRemoveUser = (id) => {
+  const endpoint = `http://localhost:3001/user/${id}`;
+  
+  return fetch(endpoint,
+    {
+      method: 'DELETE',
+      headers,
+      body: JSON.stringify({}),
+    },)
+    .then((response) => response)
+}
 
 export {
   fetchCheckedCEP,
   fetchLanguages,
   fetchUser,
   fetchCreateUser,
+  fetchGetAllUsers,
+  fetchRemoveUser,
 };

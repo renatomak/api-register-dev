@@ -1,14 +1,5 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  align-items: center;
-  background-color: var(--background2);
-  display: flex;
-  flex-direction: column;
-  height: 98vh;
-
-`;
-
 export const Button = styled.button`
   color: var(--dodgerBlue);
   border: none;
@@ -30,7 +21,14 @@ export const DivForm = styled.form`
   margin-top: 50px;
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 60%;
+`;
+
+export const DivListUsers = styled.form`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  width: 35%;
 `;
 
 export const DivTelephone = styled.div`

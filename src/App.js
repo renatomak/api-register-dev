@@ -1,4 +1,4 @@
-import Form from "./pages/Form";
+import Home from "./pages/Home";
 import GlobalStyle from './styleGlobal';
 import './colors.css'
 
@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Form />
+      <Home />
     </>
   );
 }
