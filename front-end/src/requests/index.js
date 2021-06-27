@@ -19,8 +19,8 @@ const fetchLanguages = () => {
       return list});
 }
 
-const fetchUser = (field, query, table, nameTable) => {
-  const endpoint = `http://localhost:3001/?${field}=${query}&${table}=${nameTable}`;
+const fetchUser = ({field, value, table}) => {
+  const endpoint = `http://localhost:3001/?field=${field}&value=${value}&table=${table}`;
   console.log(endpoint)
   return fetch(endpoint)
     .then((response) => response.json())

@@ -16,6 +16,7 @@ function ListUser() {
       <ul>
         {listUsers.map((user) => (
           <li
+            key={user.id}
             value={user.id}
             onClick={ selectedItem }>{user.id} - {user.fullname}</li>
         ))}

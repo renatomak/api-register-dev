@@ -22,6 +22,8 @@ const includes = {
   ],
 };
 
+
+
 const sequelize = new Sequelize(config.development);
 
 const createUserLanguage = async (languages, userId) => {
@@ -68,15 +70,17 @@ const getAllUsersService = async () => {
     console.error(error.message);
   }
 };
+// { field: 'fullname', value: 'Renato', table: 'User' }
 
 const getUsersByQueryService = async (query) => {
   try {
     const keys = Object.keys(query);
-    const column = keys[0];
+
 
     const values = Object.values(query);
-    const value = values[0];
-    const table = values[1];
+    const column = values[0];
+    const value = values[1];
+    const table = values[2];
 
     const where = {
       [column]: {
@@ -87,7 +91,19 @@ const getUsersByQueryService = async (query) => {
 
     switch (table) {
       case 'User':
-        parameters = { where, includes };
+        parameters = {
+          where,
+          include: [
+          {
+            model: Address,
+            as: 'addresses',
+          },
+          {
+            model: Language,
+            as: 'Languages',
+            through: { attributes: [] },
+          },
+        ], };
         break;
       case 'Addresses':
         parameters = {

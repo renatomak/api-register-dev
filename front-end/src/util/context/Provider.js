@@ -10,6 +10,7 @@ function TrybeerProvider({ children }) {
 
   const getAllUsers = async () => {
     const list = await fetchGetAllUsers()
+    console.log(list)
     setListUsers(list);
   };
 

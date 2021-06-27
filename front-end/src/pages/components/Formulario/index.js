@@ -31,6 +31,8 @@ function Form() {
   const [languages, setLanguages] = useState([]);
   const [disabledExcludButton, setdisabledExcludButton] = useState(true);
   const [position, setPosition] = useState(0);
+  const [optionSearch, setOptionSearch] = useState({});
+  const [valueSearch, setValue] = useState();
 
 
   const consultaCep = async (valueCep) => {
@@ -105,15 +107,19 @@ function Form() {
 
   const handleChangeHomeFullname = ({ target: { value } }) => {
     setFullname(value);
+    setValue(value);
   }
   const handleChangeHomePhone = ({ target: { value } }) => {
     setHomePhone(value);
+    setValue(value);
   }
   const handleChangeCellPhone = ({ target: { value } }) => {
     setCellPhone(value);
+    setValue(value);
   }
   const handleChangeAddress = async ({ target: { name, value } }) => {
     setAddress({...address, [name]: value });
+    setValue(value);
   }
 
   const handleChangeCheckbox = ({ target: { value }}) => {
@@ -125,6 +131,7 @@ function Form() {
       return item;
     })
     setLanguages(newList);
+    setValue(value);
   }
 
   const newUser = () => {
@@ -155,15 +162,13 @@ function Form() {
   }
 
   const search = async () => {
-    let query = { field: 'street', value: 'Av.', table: 'Addresses' };
-  
-    if (fullname) {
-      query = { field: 'fullname', value: fullname, table: 'User' };
-    }
+    let query;
+      query = {...optionSearch, value: valueSearch }
 
-    console.log(query);
-    const result = await fetchUser(query.field, query.value, 'table', query.table);
-    console.log(result)
+    console.log(query)
+    const result = await fetchUser(query);
+
+    console.log(result);
   }
 
   const next = () => {
@@ -192,6 +197,7 @@ function Form() {
     setAddress(initialAddress);
     setdisabledExcludButton(true)
     getListLanguages();
+    setValue('');
   }
 
   const removeUser = async () => {
@@ -206,6 +212,14 @@ function Form() {
     clearFields();
     loadNewUsers();
     await fetchChange(user);
+  }
+{/* query = { field: 'street', value: 'Av.', table: 'Addresses' }; */}
+  const typeSearch = ({ target: { value }}) => {
+    const array = value.split(' ');
+    const query = { field: array[1], table: array[0] };
+    console.log(query)
+
+    setOptionSearch(query);
   }
 
   return(
@@ -235,7 +249,7 @@ function Form() {
           onChange={ handleChangeCellPhone }
         />
       </DivTelephone>
-      <DivAddress>
+      <DivAddress className="div-address" key={address.id}>
         <div className="cep-state-city">
           <Input
             type="text"
@@ -243,6 +257,7 @@ function Form() {
             id="input-cep"
             name="cep"
             value={ address.cep }
+            key='0'
             onChange={ handleChangeAddress }
           />
           <Input
@@ -259,6 +274,7 @@ function Form() {
             id="input-city"
             name="city"
             value={ address.city }
+            key='1'
             onChange={ handleChangeAddress }
           />
         </div>
@@ -269,6 +285,7 @@ function Form() {
             id="input-district"
             name="district"
             value={ address.district }
+            key='2'
             onChange={ handleChangeAddress }
           />
           <Input
@@ -277,6 +294,7 @@ function Form() {
             id="input-street"
             name="street"
             value={ address.street }
+            key='3'
             onChange={ handleChangeAddress }
           />
           <Input
@@ -285,6 +303,7 @@ function Form() {
             id="input-number"
             name="number"
             value={ address.number }
+            key='4'
             onChange={ handleChangeAddress }
           />
         </div>        
@@ -294,12 +313,13 @@ function Form() {
           id="input-complement"
           name="complement"
           value={ address.complement }
+          key='5'
           onChange={ handleChangeAddress }
         /> 
       </DivAddress>
       <DivSpecialties>
         { languages.map(({ id, language, checked }, index) => (
-          <>
+          <div key={ index }>
           <input
             type="checkbox"
             className="languages"
@@ -310,7 +330,7 @@ function Form() {
             key={ index }
           />
           <label htmlFor={`language${id}`} >{language}</label>
-          </>
+          </div>
         ))}          
       </DivSpecialties>
       <Input
@@ -330,6 +350,29 @@ function Form() {
           <button type="button" onClick={ next } >
             <img src={arrowRight} alt="avançar"/>
           </button> 
+
+          <div>
+          <label for="type-search">Fazer busca por:</label>
+            <select id="options" onChange={ typeSearch }>
+              <option> - </option>
+              <optgroup label="Usuário">
+                <option value="User fullname" name="User">Nome</option>
+                <option value="User homePhone" name="User">Telefone Fixo</option>
+                <option value="User cellPhone" name="User">Celular</option>
+              </optgroup>
+              <optgroup label="Endereço">
+                <option value="Addresses cep" name="Addresses">CEP</option>
+                <option value="Addresses city" name="Addresses">Cidade</option>
+                <option value="Addresses complement" name="Addresses">Complemento</option>
+                <option value="Addresses district" name="Addresses">Bairro</option>
+                <option value="Addresses number" name="Addresses">Numero</option>
+                <option value="Addresses state" name="Addresses">Estado</option>
+                <option value="Addresses street" name="Addresses">Rua/Avenida</option>
+              </optgroup>
+              <option value="Language Language" name="Language">Lingagem</option>
+            </select>
+          </div>
+          
         </ContainerButtonsSearch>
         <Button type="button" onClick={ removeUser } disabled={ disabledExcludButton } >EXCLUIR</Button>
         <Button type="button" onClick={ changeUser } >ALTERAR</Button>    

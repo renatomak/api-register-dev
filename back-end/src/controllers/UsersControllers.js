@@ -24,7 +24,7 @@ const getAllUsers = rescue(async (_req, res) => {
 
 const search = rescue(async (req, res) => {
   const { query } = req;
-  console.log(query);
+  console.log('QUERY: ', query);
   const result = await getUsersByQueryService(query);
 
   return res.status(STATUS_200_OK).json(result);
