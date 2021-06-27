@@ -26,9 +26,7 @@ const sequelize = new Sequelize(config.development);
 
 
 const createUserLanguage = async (languages, userId) => {
-  languages.map(async ({ id: languageId }) => {
-    await UserLanguage.create({ languageId, userId });
-  });
+  languages.map(async ({ id: languageId }) => UserLanguage.create({ languageId, userId }));
 };
 
 const createUserService = async (user) => {
@@ -42,8 +40,10 @@ const createUserService = async (user) => {
       { fullname, homePhone, cellPhone },
       { transaction: createdTransaction },
     );
+    
     const userId = resultUser.id;
     await createUserLanguage(Languages, userId);
+    
     const newAddress = { ...address, userId };
     await Address.create(
       newAddress,
@@ -62,9 +62,7 @@ const createUserService = async (user) => {
 
 const getAllUsersService = async () => {
   try {
-    const result = await User.findAll(include);
-
-    return result;
+    return await User.findAll(include);
   } catch (error) {
     console.error(error.message);
   }
