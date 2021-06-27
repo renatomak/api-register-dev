@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const DevRegisterContext = createContext();
+const Context = createContext();
 
-export default DevRegisterContext;
+export default Context;

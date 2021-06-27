@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import DevRegisterContext from './DevRegisterContext';
+import Context from './Context';
 import { fetchGetAllUsers } from '../../requests';
 
 
@@ -29,18 +29,19 @@ function TrybeerProvider({ children }) {
     setSelectedUser,
     listUsers,
     setListUsers,
+    listUsers,
    };
 
 
 
   return (
-    <DevRegisterContext.Provider value={ context }>
+    <Context.Provider value={ context }>
       { children }
-    </DevRegisterContext.Provider>
+    </Context.Provider>
   );
 }
 
-export { DevRegisterContext, TrybeerProvider as Provider };
+export { Context, TrybeerProvider as Provider };
 
 TrybeerProvider.propTypes = {
   children: PropTypes.node.isRequired,

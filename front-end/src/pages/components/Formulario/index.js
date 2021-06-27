@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { DivForm, DivTelephone, DivAddress, ContainerButtons, Input, DivSpecialties, Button } from './styled';
+import { DivForm, DivTelephone, DivAddress, ContainerButtons, ContainerButtonsSearch, Input, DivSpecialties, Button } from './styled';
+import imgSearch from './search_2908.png';
+import arrowLeft from './arrow_left.png';
+import arrowRight from './arrow_right.png';
 import {
   fetchCheckedCEP,
   fetchLanguages,
@@ -8,7 +11,7 @@ import {
   fetchRemoveUser,
   fetchGetAllUsers,
   fetchChange } from '../../../requests'
-import { DevRegisterContext } from '../../../util';
+import { Context } from '../../../util';
 const initialAddress = {
   cep: '',
   state: '',
@@ -20,25 +23,29 @@ const initialAddress = {
 }
 
 function Form() {
-  const { selectedUser, setListUsers } = useContext(DevRegisterContext);
+  const { selectedUser, setSelectedUser, listUsers, setListUsers } = useContext(Context);
   const [fullname, setFullname] = useState('');
   const [homePhone, setHomePhone] = useState('');
   const [cellPhone, setCellPhone] = useState('');
   const [address, setAddress] = useState(initialAddress);
   const [languages, setLanguages] = useState([]);
   const [disabledExcludButton, setdisabledExcludButton] = useState(true);
+  const [position, setPosition] = useState(0);
 
 
   const consultaCep = async (valueCep) => {
-    const {
-      cep,
-      street,
-      complement,
-      city,
-      district,
-      state,
-      number } = await fetchCheckedCEP(valueCep);
-    setAddress({...address, cep, street, complement, city, district, state, number })
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if(xhr.readyState === 4) {
+        const { cep, city, complement, district, state, street} = JSON.parse(xhr.response);
+        setAddress({...address, cep, street, complement, city, district, state })
+        console.log(JSON.parse(xhr.response))
+      }
+    }
+      
+    xhr.open('GET', `http://localhost:3001/cep?cep=${valueCep}`);
+
+    xhr.send();    
   }
 
   const updateLanguages = () => {
@@ -77,10 +84,13 @@ function Form() {
     }
   }, [selectedUser])
 
-
-  useEffect( async () => {
+  const getListLanguages = async () => {
     const listLanguages = await fetchLanguages();
     setLanguages(listLanguages);
+  }
+
+  useEffect( async () => {
+    getListLanguages();
   }, [])
 
   useEffect(() => {
@@ -89,6 +99,7 @@ function Form() {
       consultaCep(cep);
     }
   }, [address]);
+
 
 
 
@@ -132,14 +143,46 @@ function Form() {
     return user;
   }
 
+  const loadNewUsers = async () => {
+    const Users = await fetchGetAllUsers();
+    setListUsers(Users);
+  }
+
   const register = async () => {
     const user = newUser();
-    await fetchCreateUser(user)
+    await fetchCreateUser(user);
+    loadNewUsers();
   }
 
   const search = async () => {
-    const result = await fetchUser('street', 'Av.', 'table', 'Addresses');
+    let query = { field: 'street', value: 'Av.', table: 'Addresses' };
+  
+    if (fullname) {
+      query = { field: 'fullname', value: fullname, table: 'User' };
+    }
+
+    console.log(query);
+    const result = await fetchUser(query.field, query.value, 'table', query.table);
     console.log(result)
+  }
+
+  const next = () => {
+    if (position < listUsers.length ) {
+      setPosition(position+1);
+      setSelectedUser(listUsers[position]);
+    } else {
+      setPosition(0);
+    }
+  }
+
+  const previous = () => {
+    setPosition(position-1);
+    if (position >= 0 ) {
+      setSelectedUser(listUsers[position]);
+    } else {
+      setPosition(listUsers.length-1);
+    }
+
   }
 
   const clearFields = () => {
@@ -148,11 +191,7 @@ function Form() {
     setCellPhone('');
     setAddress(initialAddress);
     setdisabledExcludButton(true)
-  }
-
-  const loadNewUsers = async () => {
-    const Users = await fetchGetAllUsers();
-    setListUsers(Users);
+    getListLanguages();
   }
 
   const removeUser = async () => {
@@ -281,7 +320,17 @@ function Form() {
       /> 
       <ContainerButtons>
         <Button type="button" onClick={ register } >CADASTRO</Button> 
-        <Button type="button" onClick={ search } >BUSCAR</Button> 
+        <ContainerButtonsSearch>
+          <button type="button" onClick={ previous } >
+            <img src={arrowLeft} alt="voltar"/>
+          </button> 
+          <button type="button" onClick={ search } id="search" >
+            <img src={imgSearch} alt="search"/>
+          </button> 
+          <button type="button" onClick={ next } >
+            <img src={arrowRight} alt="avançar"/>
+          </button> 
+        </ContainerButtonsSearch>
         <Button type="button" onClick={ removeUser } disabled={ disabledExcludButton } >EXCLUIR</Button>
         <Button type="button" onClick={ changeUser } >ALTERAR</Button>    
       </ContainerButtons>

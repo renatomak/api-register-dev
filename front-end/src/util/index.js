@@ -1,6 +1,6 @@
-const { DevRegisterContext, Provider } = require('./context/Provider');
+const { Context, Provider } = require('./context/Provider');
 
 module.exports = {
-  DevRegisterContext,
+  Context,
   Provider,
 };

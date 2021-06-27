@@ -21,6 +21,19 @@ export const ContainerButtons = styled.form`
   justify-content: space-between;
 `;
 
+export const ContainerButtonsSearch = styled.form`
+  display: flex;
+  justify-content: space-between;
+  button {
+    border: none;
+    background: none;
+  }
+  #search {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+`;
+
 export const DivForm = styled.form`
   margin-top: 50px;
   display: flex;

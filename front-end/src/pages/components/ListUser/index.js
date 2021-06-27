@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { DevRegisterContext } from '../../../util';
+import { Context } from '../../../util';
 import { DivListUsers } from './styled'
 
 function ListUser() {
- const { setSelectedUser, listUsers } = useContext(DevRegisterContext);
+ const { setSelectedUser, listUsers } = useContext(Context);
 
 
   const selectedItem = ({ target: { value } }) => {
