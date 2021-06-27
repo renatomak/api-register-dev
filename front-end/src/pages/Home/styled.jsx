@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  align-items: center;
+  align-items: flex-start;
   background-color: var(--background2);
   display: flex;
+  padding-top: 2rem;
   height: 98vh;
 `;
 

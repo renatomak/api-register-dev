@@ -8,7 +8,7 @@ export const DivListUsers = styled.form`
   line-height: 50px;
   color: #4d4c4c;
   font-size: 2rem;
-  height: 100%;
+  
 
   ul {
     list-style: none;
@@ -19,7 +19,6 @@ export const DivListUsers = styled.form`
 `;
 
 export const H5 = styled.h5`
-  margin-top: 50px;
   text-align: center;
   color: var(--dodgerBlue);
 `;
