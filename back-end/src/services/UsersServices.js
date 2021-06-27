@@ -8,7 +8,7 @@ const {
   UserLanguage,
 } = require('../models');
 
-const includes = {
+const include = {
   include: [
     {
       model: Address,
@@ -22,9 +22,8 @@ const includes = {
   ],
 };
 
-
-
 const sequelize = new Sequelize(config.development);
+
 
 const createUserLanguage = async (languages, userId) => {
   languages.map(async ({ id: languageId }) => {
@@ -63,7 +62,7 @@ const createUserService = async (user) => {
 
 const getAllUsersService = async () => {
   try {
-    const result = await User.findAll(includes);
+    const result = await User.findAll(include);
 
     return result;
   } catch (error) {
@@ -84,17 +83,6 @@ const getUsersByQueryService = async (query) => {
         [Op.like]: `%${value}%`,
       },
     };
-    const include = [
-      {
-        model: Address,
-        as: 'addresses',
-      },
-      {
-        model: Language,
-        as: 'Languages',
-        through: { attributes: [] },
-      },
-    ];
     let parameters = {};
 
     switch (table) {
@@ -102,42 +90,16 @@ const getUsersByQueryService = async (query) => {
         parameters = { where, include };
         break;
       case 'Addresses':
-        parameters = {
-          include: [
-            {
-              model: Address,
-              as: 'addresses',
-              where,
-            },
-            {
-              model: Language,
-              as: 'Languages',
-              through: { attributes: [] },
-            },
-          ],
-        };
+        include[0] = {...include[0], where}
+        parameters = { include }
         break;
       case 'Language':
-        parameters = {
-          include: [
-            {
-              model: Address,
-              as: 'addresses',
-            },
-            {
-              model: Language,
-              as: 'Languages',
-              through: { attributes: [] },
-              where,
-            },
-          ],
-        };
+        include[1] = {...include[1], where}
+        parameters = { include }
         break;
       default:
     }
-
     const result = await User.findAll(parameters);
-
     return result;
   } catch (error) {
     console.error(error.message);
