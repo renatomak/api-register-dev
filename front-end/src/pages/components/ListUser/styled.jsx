@@ -6,7 +6,7 @@ export const DivListUsers = styled.form`
   flex-direction: column;
   width: 30%;
   line-height: 50px;
-  color: #4d4c4c;
+  color: var(--modifyGray);
   font-size: 2rem;
   
 

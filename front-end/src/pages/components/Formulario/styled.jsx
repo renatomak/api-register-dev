@@ -61,14 +61,18 @@ export const DivAddress = styled.div`
   }
 `;
 
-export const DivSpecialties = styled.div`
+export const DivLanguages = styled.div`
   display: flex;
-  background-color: #2b8bb1;
+  background-color: var(--background1);
   height: 50px;
   border-radius: 20px;
   align-items: center;
+  color: var(--modifyGray);
   *{
     flex-grow: 1;
+  }
+  .checkbox {
+    text-align: center;
   }
   margin-bottom: 20px;
 `;

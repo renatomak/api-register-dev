@@ -64,7 +64,7 @@ function Search() {
           </button> 
 
           <div>
-          <label for="type-search">Fazer busca por:</label>
+            <label for="type-search" className="seach">Fazer busca por:</label>
             <select id="options" onChange={ typeSearch }>
               <option> - </option>
               <optgroup label="Usuário">

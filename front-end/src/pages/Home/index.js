@@ -8,7 +8,7 @@ function Home() {
 
   return(
     <>
-    <H1>Cadastro de Desenvolvedores</H1>
+    <H1>Cadastro de Desenvolvedores (as)</H1>
     <Container>
       <ListUsers />
       <ContainerRight>

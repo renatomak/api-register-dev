@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { DivForm, DivTelephone, DivAddress, ContainerButtons, Input, DivSpecialties, Button } from './styled';
+import { DivForm, DivTelephone, DivAddress, ContainerButtons, Input, DivLanguages, Button } from './styled';
 import {
   fetchLanguages,
   fetchCreateUser,
@@ -52,10 +52,7 @@ function Form() {
       }
       return item;
     })
-
-
-    setLanguages(newLanguages)
-    console.log(languages)
+    setLanguages(newLanguages);
   }
 
   const setFields = () => {
@@ -268,9 +265,9 @@ function Form() {
           onChange={ handleChangeAddress }
         /> 
       </DivAddress>
-      <DivSpecialties>
+      <DivLanguages>
         { languages.map(({ id, language, checked }, index) => (
-          <div key={ index }>
+          <div key={ index } className="checkbox">
           <input
             type="checkbox"
             className="languages"
@@ -283,7 +280,7 @@ function Form() {
           <label htmlFor={`language${id}`} >{language}</label>
           </div>
         ))}          
-      </DivSpecialties>
+      </DivLanguages>
       <Input
         type="text"
         placeholder="Outras Linguagens? "
