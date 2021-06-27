@@ -1,7 +1,8 @@
 import React from 'react';
 import Form from '../components/Formulario';
 import ListUsers from '../components/ListUser'
-import { Container, H1} from './styled';
+import Search from '../components/Search'
+import { Container, H1, ContainerRight } from './styled';
 
 function Home() {
 
@@ -10,7 +11,10 @@ function Home() {
     <H1>Cadastro de Desenvolvedores</H1>
     <Container>
       <ListUsers />
-      <Form />
+      <ContainerRight>
+        <Form />
+        <Search /> 
+      </ContainerRight>
     </Container>
     </>
   );

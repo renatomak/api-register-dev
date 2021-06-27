@@ -1,13 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { DivForm, DivTelephone, DivAddress, ContainerButtons, ContainerButtonsSearch, Input, DivSpecialties, Button } from './styled';
-import imgSearch from './search_2908.png';
-import arrowLeft from './arrow_left.png';
-import arrowRight from './arrow_right.png';
+import { DivForm, DivTelephone, DivAddress, ContainerButtons, Input, DivSpecialties, Button } from './styled';
 import {
-  fetchCheckedCEP,
   fetchLanguages,
   fetchCreateUser,
-  fetchUser,
   fetchRemoveUser,
   fetchGetAllUsers,
   fetchChange } from '../../../requests'
@@ -23,17 +18,13 @@ const initialAddress = {
 }
 
 function Form() {
-  const { selectedUser, setSelectedUser, listUsers, setListUsers } = useContext(Context);
+  const { selectedUser, setListUsers, setValue } = useContext(Context);
   const [fullname, setFullname] = useState('');
   const [homePhone, setHomePhone] = useState('');
   const [cellPhone, setCellPhone] = useState('');
   const [address, setAddress] = useState(initialAddress);
   const [languages, setLanguages] = useState([]);
   const [disabledExcludButton, setdisabledExcludButton] = useState(true);
-  const [position, setPosition] = useState(0);
-  const [optionSearch, setOptionSearch] = useState({});
-  const [valueSearch, setValue] = useState();
-
 
   const consultaCep = async (valueCep) => {
     const xhr = new XMLHttpRequest();
@@ -102,9 +93,6 @@ function Form() {
     }
   }, [address]);
 
-
-
-
   const handleChangeHomeFullname = ({ target: { value } }) => {
     setFullname(value);
     setValue(value);
@@ -161,35 +149,6 @@ function Form() {
     loadNewUsers();
   }
 
-  const search = async () => {
-    let query;
-      query = {...optionSearch, value: valueSearch }
-
-    console.log(query)
-    const result = await fetchUser(query);
-
-    console.log(result);
-  }
-
-  const next = () => {
-    if (position < listUsers.length ) {
-      setPosition(position+1);
-      setSelectedUser(listUsers[position]);
-    } else {
-      setPosition(0);
-    }
-  }
-
-  const previous = () => {
-    setPosition(position-1);
-    if (position >= 0 ) {
-      setSelectedUser(listUsers[position]);
-    } else {
-      setPosition(listUsers.length-1);
-    }
-
-  }
-
   const clearFields = () => {
     setFullname('');
     setHomePhone('');
@@ -212,14 +171,6 @@ function Form() {
     clearFields();
     loadNewUsers();
     await fetchChange(user);
-  }
-{/* query = { field: 'street', value: 'Av.', table: 'Addresses' }; */}
-  const typeSearch = ({ target: { value }}) => {
-    const array = value.split(' ');
-    const query = { field: array[1], table: array[0] };
-    console.log(query)
-
-    setOptionSearch(query);
   }
 
   return(
@@ -340,40 +291,6 @@ function Form() {
       /> 
       <ContainerButtons>
         <Button type="button" onClick={ register } >CADASTRO</Button> 
-        <ContainerButtonsSearch>
-          <button type="button" onClick={ previous } >
-            <img src={arrowLeft} alt="voltar"/>
-          </button> 
-          <button type="button" onClick={ search } id="search" >
-            <img src={imgSearch} alt="search"/>
-          </button> 
-          <button type="button" onClick={ next } >
-            <img src={arrowRight} alt="avançar"/>
-          </button> 
-
-          <div>
-          <label for="type-search">Fazer busca por:</label>
-            <select id="options" onChange={ typeSearch }>
-              <option> - </option>
-              <optgroup label="Usuário">
-                <option value="User fullname" name="User">Nome</option>
-                <option value="User homePhone" name="User">Telefone Fixo</option>
-                <option value="User cellPhone" name="User">Celular</option>
-              </optgroup>
-              <optgroup label="Endereço">
-                <option value="Addresses cep" name="Addresses">CEP</option>
-                <option value="Addresses city" name="Addresses">Cidade</option>
-                <option value="Addresses complement" name="Addresses">Complemento</option>
-                <option value="Addresses district" name="Addresses">Bairro</option>
-                <option value="Addresses number" name="Addresses">Numero</option>
-                <option value="Addresses state" name="Addresses">Estado</option>
-                <option value="Addresses street" name="Addresses">Rua/Avenida</option>
-              </optgroup>
-              <option value="Language Language" name="Language">Lingagem</option>
-            </select>
-          </div>
-          
-        </ContainerButtonsSearch>
         <Button type="button" onClick={ removeUser } disabled={ disabledExcludButton } >EXCLUIR</Button>
         <Button type="button" onClick={ changeUser } >ALTERAR</Button>    
       </ContainerButtons>

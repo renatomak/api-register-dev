@@ -16,12 +16,12 @@ export const Button = styled.button`
   }
 `;
 
-export const ContainerButtons = styled.form`
+export const ContainerButtons = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
-export const ContainerButtonsSearch = styled.form`
+export const ContainerButtonsSearch = styled.div`
   display: flex;
   justify-content: space-between;
   button {
@@ -37,7 +37,6 @@ export const ContainerButtonsSearch = styled.form`
 export const DivForm = styled.form`
   display: flex;
   flex-direction: column;
-  width: 60%;
 `;
 
 export const DivTelephone = styled.div`

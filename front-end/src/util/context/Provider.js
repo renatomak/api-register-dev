@@ -7,6 +7,7 @@ import { fetchGetAllUsers } from '../../requests';
 function TrybeerProvider({ children }) {
   const [selectedUser, setSelectedUser] = useState({});
   const [listUsers, setListUsers] = useState([]);
+  const [valueSearch, setValue] = useState();
 
   const getAllUsers = async () => {
     const list = await fetchGetAllUsers()
@@ -31,6 +32,8 @@ function TrybeerProvider({ children }) {
     listUsers,
     setListUsers,
     listUsers,
+    valueSearch,
+    setValue,
    };
 
 

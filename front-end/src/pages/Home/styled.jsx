@@ -8,6 +8,11 @@ export const Container = styled.div`
   height: 98vh;
 `;
 
+export const ContainerRight = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const H1 = styled.h1`
   text-align: center;
   line-height: 5rem;
