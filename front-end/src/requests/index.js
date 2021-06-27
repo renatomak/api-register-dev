@@ -1,7 +1,8 @@
 const headers = { 'Content-type': 'application/json' };
+const localhost = 'http://localhost:3001/'
 
 const fetchCheckedCEP = (cep) => {
-  const endpoint = `http://localhost:3001/cep?cep=${cep}`;
+  const endpoint = `${localhost}cep?cep=${cep}`;
   
   return fetch(endpoint)
     .then((response) => response.json())
@@ -9,7 +10,7 @@ const fetchCheckedCEP = (cep) => {
 };
 
 const fetchLanguages = () => {
-  const endpoint = `http://localhost:3001/languages`;
+  const endpoint = `${localhost}languages`;
   return fetch(endpoint)
     .then((response) => response.json())
     .then((data) => {
@@ -20,7 +21,7 @@ const fetchLanguages = () => {
 }
 
 const fetchUser = ({field, value, table}) => {
-  const endpoint = `http://localhost:3001/?field=${field}&value=${value}&table=${table}`;
+  const endpoint = `${localhost}?field=${field}&value=${value}&table=${table}`;
   console.log(endpoint)
   return fetch(endpoint)
     .then((response) => response.json())
@@ -28,7 +29,7 @@ const fetchUser = ({field, value, table}) => {
 }
 
 const fetchGetAllUsers = () => {
-  const endpoint = `http://localhost:3001/user`;
+  const endpoint = `${localhost}user`;
   console.log(endpoint)
   return fetch(endpoint)
     .then((response) => response.json())
@@ -36,7 +37,7 @@ const fetchGetAllUsers = () => {
 }
 
 const fetchCreateUser = (user) => {
-  const endpoint = `http://localhost:3001/user`;
+  const endpoint = `${localhost}user`;
   
   return fetch(
     endpoint,
@@ -50,7 +51,7 @@ const fetchCreateUser = (user) => {
 }
 
 const fetchRemoveUser = (id) => {
-  const endpoint = `http://localhost:3001/user/${id}`;
+  const endpoint = `${localhost}user/${id}`;
   
   return fetch(endpoint,
     {
@@ -62,7 +63,7 @@ const fetchRemoveUser = (id) => {
 }
 
 const fetchChange = (user) => {
-  const endpoint = `http://localhost:3001/user`;
+  const endpoint = `${localhost}user`;
   
   return fetch(endpoint,
     {

@@ -74,7 +74,6 @@ function Form() {
         setFields();
       }
     }
-
   }, [selectedUser])
 
   const getListLanguages = async () => {
