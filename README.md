@@ -5,7 +5,7 @@
 
 Esta é uma aplicação full stack web construída para treinamento de teste técnico - uma das  fases dos processos de contratação das empresas. Organizado pela [Trybe](https://www.betrybe.com/).
 
-A aplicação consiste em cadastrar, atualizar e excluir o cadastro de um Desenvolvedor Web.
+A aplicação consiste em criar, atualizar e excluir o cadastro de um/uma Desenvolvedor(a) Web.
 
 ## Layout mobile
 
