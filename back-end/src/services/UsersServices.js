@@ -70,13 +70,10 @@ const getAllUsersService = async () => {
     console.error(error.message);
   }
 };
-// { field: 'fullname', value: 'Renato', table: 'User' }
 
+// { field: 'fullname', value: 'Renato', table: 'User' }
 const getUsersByQueryService = async (query) => {
   try {
-    const keys = Object.keys(query);
-
-
     const values = Object.values(query);
     const column = values[0];
     const value = values[1];
@@ -87,23 +84,22 @@ const getUsersByQueryService = async (query) => {
         [Op.like]: `%${value}%`,
       },
     };
+    const include = [
+      {
+        model: Address,
+        as: 'addresses',
+      },
+      {
+        model: Language,
+        as: 'Languages',
+        through: { attributes: [] },
+      },
+    ];
     let parameters = {};
 
     switch (table) {
       case 'User':
-        parameters = {
-          where,
-          include: [
-          {
-            model: Address,
-            as: 'addresses',
-          },
-          {
-            model: Language,
-            as: 'Languages',
-            through: { attributes: [] },
-          },
-        ], };
+        parameters = { where, include };
         break;
       case 'Addresses':
         parameters = {

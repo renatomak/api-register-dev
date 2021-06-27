@@ -68,10 +68,13 @@ function Form() {
   }
 
   useEffect(() => {
-    const size = (Object.keys(selectedUser)).length
-    if (size) {
-      setFields();
+    if(selectedUser) {
+      const size = (Object.keys(selectedUser)).length;
+      if (size) {
+        setFields();
+      }
     }
+
   }, [selectedUser])
 
   const getListLanguages = async () => {
