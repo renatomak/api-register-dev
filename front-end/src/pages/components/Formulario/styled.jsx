@@ -35,7 +35,6 @@ export const ContainerButtonsSearch = styled.form`
 `;
 
 export const DivForm = styled.form`
-  margin-top: 50px;
   display: flex;
   flex-direction: column;
   width: 60%;

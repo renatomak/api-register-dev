@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Context } from '../../../util';
-import { DivListUsers } from './styled'
+import { DivListUsers, H5 } from './styled'
 
 function ListUser() {
  const { setSelectedUser, listUsers } = useContext(Context);
@@ -13,6 +13,7 @@ function ListUser() {
 
   return(
     <DivListUsers>
+      <H5>Lista de Cadastrados (as) </H5>
       <ul>
         {listUsers.map((user) => (
           <li

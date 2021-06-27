@@ -7,3 +7,8 @@ export const Container = styled.div`
   height: 98vh;
 `;
 
+export const H1 = styled.h1`
+  text-align: center;
+  line-height: 5rem;
+  color: white;
+`;
