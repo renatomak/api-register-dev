@@ -26,7 +26,12 @@ const sequelize = new Sequelize(config.development);
 
 
 const createUserLanguage = async (languages, userId) => {
-  languages.map(async ({ id: languageId }) => UserLanguage.create({ languageId, userId }));
+  try {
+    languages.map(async ({ id: languageId }) => UserLanguage.create({ languageId, userId }));
+  } catch (error) {
+    const message = 'ERRO ao tentar cadastrar novas linguagens - metódo: createUserLanguage'+error.message;
+    throw new Error(message);
+  }
 };
 
 const createUserService = async (user) => {
@@ -55,8 +60,8 @@ const createUserService = async (user) => {
     return resultUser;
   } catch (error) {
     await createdTransaction.rollback();
-    console.error(error.message);
-    throw new Error();
+    const message = 'ERRO ao tentar cadastrar novo Desenvolvedor - metódo: createUserService.' + error.message;
+    throw new Error(message);
   }
 };
 
@@ -64,7 +69,7 @@ const getAllUsersService = async () => {
   try {
     return await User.findAll(include);
   } catch (error) {
-    console.error(error.message);
+    console.error( error.message);
   }
 };
 
@@ -100,7 +105,8 @@ const getUsersByQueryService = async (query) => {
     const result = await User.findAll(parameters);
     return result;
   } catch (error) {
-    console.error(error.message);
+    const message = 'ERROR ao tentar buscar os Desenvolverdor cadastrado - metódo: getUsersByQueryService.' + error.message;
+    throw new Error(message);
   }
 };
 
@@ -108,7 +114,8 @@ const getUserByIdService = async (id) => {
   try {
     return await User.findByPk(id, includes);
   } catch (error) {
-    console.error(error.message);
+    const message = 'ERROR ao tentar localizar o Desenvolvedor por ID  - metódo: getUserByIdService.'+ error.message;
+    throw new Error(message);
   }
 };
 
@@ -130,8 +137,8 @@ const deleteUserService = async (id) => {
     return true;
   } catch (error) {
     await removeUserTransaction.rollback();
-    console.error(error.message);
-    throw new Error();
+    const message = 'ERROR ao tentar excluir o Desenvolvedor - metódo: deleteUserService.'+ error.message;
+    throw new Error(message);
   }
 };
 
@@ -162,7 +169,8 @@ const updateUserService = async (user) => {
     await updateTransaction.commit();
   } catch (error) {
     await updateTransaction.rollback();
-    console.error(error.message);
+    const message = 'ERROR ao tentar atualizar os dados do Desenvolvedor - metódo: updateUserService.'+ error.message;
+    throw new Error(message);
   }
 };
 

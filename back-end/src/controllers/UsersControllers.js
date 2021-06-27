@@ -5,6 +5,7 @@ const {
   STATUS_400_BAD_REQUEST,
   STATUS_404_NOT_FOUND,
   STATUS_204_NO_CONTENT,
+  STATUS_401_UNAUTHORIZED
 } = require('../util');
 
 const {
@@ -17,23 +18,36 @@ const {
 } = require('../services/UsersServices');
 
 const getAllUsers = rescue(async (_req, res) => {
-  const result = await getAllUsersService();
-
-  return res.status(STATUS_200_OK).json(result);
+  try {
+    const result = await getAllUsersService();
+    return res.status(STATUS_200_OK).json(result);
+  } catch (error) {
+    console.error(err.message);
+    return res.status(STATUS_401_UNAUTHORIZED).json({ message: 'Internal Error' });
+  }
 });
 
 const search = rescue(async (req, res) => {
-  const { query } = req;
-  console.log('QUERY: ', query);
-  const result = await getUsersByQueryService(query);
+  try {
+    const { query } = req;
+    const result = await getUsersByQueryService(query);
 
-  return res.status(STATUS_200_OK).json(result);
+    return res.status(STATUS_200_OK).json(result);
+  } catch (error) {
+    console.error(err.message);
+    return res.status(STATUS_401_UNAUTHORIZED).json({ message: 'Internal Error' });
+  }
 });
 
 const createUser = rescue(async (req, res) => {
-  console.log(req.body);
-  const result = await createUserService(req.body);
-  return res.status(STATUS_201_CREATED).json(result);
+  try {
+    const result = await createUserService(req.body);
+    return res.status(STATUS_201_CREATED).json(result);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(STATUS_400_BAD_REQUEST).json({ message: 'Bad request' });
+  }
+
 });
 
 const getUserById = rescue(async (req, res) => {
@@ -45,8 +59,8 @@ const getUserById = rescue(async (req, res) => {
 
     return res.status(STATUS_200_OK).json(user);
   } catch (err) {
-    console.error(err.message);
-    return res.status(STATUS_400_BAD_REQUEST).json({ message: 'Invalid fields' });
+    console.error(error.message);
+    return res.status(STATUS_400_BAD_REQUEST).json({ message: 'Bad request' });
   }
 });
 
@@ -56,18 +70,23 @@ const removeUser = rescue(async (req, res) => {
     await deleteUserService(id);
 
     return res.status(STATUS_204_NO_CONTENT).end();
-  } catch (err) {
-    console.error(err.message);
-    return res.status(STATUS_400_BAD_REQUEST).json({ message: 'Invalid request' });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(STATUS_404_NOT_FOUND).json({ message: 'User does not exist' });
   }
 });
 
 const updateUser = rescue(async (req, res) => {
-  const { body: user } = req;
+  try {
+      const { body: user } = req;
 
   updateUserService(user);
 
   res.status(204).json({ message: 'Usuário atualizado com sucesso!' });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(STATUS_404_NOT_FOUND).json({ message: 'User does not exist' });
+  }
 });
 
 module.exports = {

@@ -6,7 +6,8 @@ const getAll = async () => {
 
     return result;
   } catch (error) {
-    console.error(error.message);
+    const message = 'ERRO ao tenatar buscar as Linguagens de programação cadastradas - metódo: getAll' + error.message;
+    throw new Error(message)
   }
 };
 
