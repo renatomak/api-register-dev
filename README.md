@@ -21,7 +21,7 @@ A aplicação consiste em criar, atualizar e excluir o cadastro de um/uma Desenv
 - [ ] Utilizar o Swagger para documentação.
 - [ ] Criar os testes unitários.
 - [X] Implementar o código de forma limpa (clean code).
-- [ ] Realizar o deploy em qualquer serviço de cloud (Heroku, AWS, Azure, etc.).
+- [X] Realizar o deploy em qualquer serviço de cloud (Heroku, AWS, Azure, etc.).
 - [X] Utilizar o GIT(commits descritivos).
 
 ## Layout
@@ -51,3 +51,8 @@ A aplicação consiste em criar, atualizar e excluir o cadastro de um/uma Desenv
 <img src="https://cdn.icon-icons.com/icons2/2415/PNG/512/heroku_plain_wordmark_logo_icon_146480.png" alt="heroku" width="40" height="40" style="max-width:100%;" />   &nbsp;    &nbsp;   &nbsp;   &nbsp;
 
 # Como executar o projeto
+O deploy do Projeto é parcial devido a impossibilidade de realizar cadastro de cartão de crédito nos sites como Heroku e AWS. A adição do cartão é necessária para acrescentar o app que faz a manipulação do banco de dados.
+Contudo, o front-end está disponível para ser acessado pelo endereço https://api-api-register-dev-frontend.herokuapp.com/ .
+Rodando o backend, localmente, é possível fazer o teste da aplicação.
+Em resumo: só é possivel testar a aplicação localmente.
+
