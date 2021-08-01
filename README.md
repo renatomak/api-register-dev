@@ -50,9 +50,21 @@ A aplicação consiste em criar, atualizar e excluir o cadastro de um/uma Desenv
 <img src="https://cdn.icon-icons.com/icons2/2415/PNG/512/mysql_original_wordmark_logo_icon_146417.png" alt="mysql" width="40" height="40" style="max-width:100%;" />   &nbsp;    &nbsp;   &nbsp;   &nbsp;
 <img src="https://cdn.icon-icons.com/icons2/2415/PNG/512/heroku_plain_wordmark_logo_icon_146480.png" alt="heroku" width="40" height="40" style="max-width:100%;" />   &nbsp;    &nbsp;   &nbsp;   &nbsp;
 
-# Como executar o projeto
-O deploy do Projeto é parcial devido a impossibilidade de realizar cadastro de cartão de crédito nos sites como Heroku e AWS. A adição do cartão é necessária para acrescentar o app que faz a manipulação do banco de dados.
-Contudo, o front-end está disponível para ser acessado pelo endereço https://api-api-register-dev-frontend.herokuapp.com/ .
-Rodando o backend, localmente, é possível fazer o teste da aplicação.
-Em resumo: só é possivel testar a aplicação localmente.
+# Como executar o projeto localmente
+
+1º - Clone o [Repositório](https://github.com/renatomak/api-register-dev) do projeto no GitHub
+
+Pré-requisitos: npm / yarn
+
+## Back end
+
+2. Entre na pasta back-end
+3. Instale as dependências - npm install
+4. Inicie o projeto - npm start
+
+## Front end web
+
+2. Entre na pasta front-end
+3. Instale as dependências - npm install
+4. Inicie o projeto - npm start
 
